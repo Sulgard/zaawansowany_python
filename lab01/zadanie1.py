@@ -96,6 +96,37 @@ class Circle(Figure):
         import math
         return 2 * math.pi * (self.radius / 2)
 
+
+class Field:
+
+    def __init__(self, value):
+        super().__setattr__("value", value)
+
+    def __str__(self):
+        return f"Field({self.value})"
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __eq__(self, other):
+        if isinstance(other, type(self)):
+            return self.value == other.value
+        else:
+            return False
+
+    def __setattr__(self, key, value):
+        if key == "value":
+            if type(value) == int:
+                if 10 <= value <= 2000:
+                    super.__setattr__(key, value)
+            elif type(value) == str:
+                super.__setattr__(key, value)
+            else:
+                raise TypeError("unsupported type must be either int or string")
+        else:
+            super().__setattr__(key, value)
+
+
 if __name__ == "__main__":
     square = Square(2)
     square2 = Square(2.5)
@@ -115,3 +146,11 @@ if __name__ == "__main__":
 
     print(square.__gt__(square3))
     print(square.__lt__(square3))
+
+    print("ZADANIE3")
+    field = Field(3)
+
+    # field.value = 2.5 wyskakuje oczekiwany Error
+
+    field.value = 162598
+    print(field)
