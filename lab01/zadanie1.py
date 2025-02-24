@@ -5,6 +5,15 @@ class Figure:
     def get_field(self):
         raise NotImplementedError("Należy zaimplementować tę metodę")
 
+    def get_circumference(self):
+        raise NotImplementedError("Nalezy zaimplementowac te metode")
+
+    def __gt__(self, other):
+        return self.get_field() > other.get_field()
+
+    def __lt__(self, other):
+        return self.get_field() < other.get_field()
+
 
 class Square(Figure):
     def __init__(self, side=1):
@@ -70,13 +79,39 @@ class Square(Figure):
             return self.side == other.side
         return False
 
+    def get_circumference(self):
+        return 4 * self.side
+
+
+class Circle(Figure):
+
+    def __init__(self, radius):
+        self.radius = radius
+
+    def get_field(self):
+        import math
+        return math.pi * (self.radius / 2) ** 2
+
+    def get_circumference(self):
+        import math
+        return 2 * math.pi * (self.radius / 2)
+
 if __name__ == "__main__":
     square = Square(2)
     square2 = Square(2.5)
-    square3 = Square(2)
+    square3 = Square(3)
 #    square.__radd__(2.5) incorrect
     print(square.__radd__(2)) # dziala
     print(square2.__add__(square))
     print(square.side)
     print(square2.side)
     print(square3.__iadd__(4))
+
+    print("KOLO")
+    circle = Circle(6)
+    print(circle.radius)
+    print(circle.get_field())
+    print(circle.get_circumference())
+
+    print(square.__gt__(square3))
+    print(square.__lt__(square3))
