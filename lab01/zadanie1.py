@@ -7,8 +7,6 @@ class Figure:
 
 
 class Square(Figure):
-    """ Klasa do obsługi figury typu kwadrat"""
-
     def __init__(self, side=1):
         self.side = side
         self.field = self.side ** 2
@@ -18,8 +16,11 @@ class Square(Figure):
 
     def __iadd__(self, other):
         import math
-        if isinstance(other, type(self)):
+        if isinstance(other, type(int)):
             new_side = math.sqrt(self.side ** 2 + other.side ** 2)
+            return type(self)(new_side)
+        elif type(other) == int:
+            new_side = math.sqrt(self.side ** 2 + other ** 2)
             return type(self)(new_side)
         else:
             raise TypeError(
@@ -27,9 +28,9 @@ class Square(Figure):
                 f"'{type(self).__name__}' and '{type(other).__name__}'"
             )
 
-    def __radd__(self, other):
+    def __radd__(self, other: int):
         import math
-        if isinstance(other, type(int)):
+        if type(other) == int:
             new_side = math.sqrt(self.side ** 2 + other ** 2)
             return type(self)(new_side)
         else:
@@ -41,16 +42,15 @@ class Square(Figure):
     def __str__(self) -> str:
         return f"Square({self.side})"
 
-    # tu możemy się zastanowić jak zrealizować dodawanie dwóch kwadratów
-    # czy sumujemy długość boku (stworzymy kwadrat o boku, który opisuje dwa kwadraty?, czy też sumujemy pole i wyznaczamy nową wartość size?
-    # przyjmijmy ten drugi scenariusz
-    # nazwa pierwszego argumenty metody, która w dokumentacji zawsze nosi nazwę self, jest tylko umową, ale wymogiem jest to, że będzie przekazywana
-    # do metody zawsze jako pierwszy argument. Więc jak wolimy this to ...
     def __add__(this, other):
         import math
         if isinstance(other, type(this)):
             new_side = math.sqrt(this.side ** 2 + other.side ** 2)
             return type(this)(new_side)
+        elif type(other) == int:
+            new_side = math.sqrt(this.side ** 2 + other.side ** 2)
+            return type(int)(new_side)
+
         else:
             raise TypeError(
                 "unsupported operand for +: "
@@ -69,3 +69,14 @@ class Square(Figure):
             # if isinstance(other, type(self)):
             return self.side == other.side
         return False
+
+if __name__ == "__main__":
+    square = Square(2)
+    square2 = Square(2.5)
+    square3 = Square(2)
+#    square.__radd__(2.5) incorrect
+    print(square.__radd__(2)) # dziala
+    print(square2.__add__(square))
+    print(square.side)
+    print(square2.side)
+    print(square3.__iadd__(4))
